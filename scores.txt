@@ -1,0 +1,4 @@
+easy = 5
+medium = 7
+hard = 8
+insane = None
