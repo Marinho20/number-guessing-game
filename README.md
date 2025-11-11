@@ -4,12 +4,13 @@ An interactive CLI number guessing game built in Python. Features multiple diffi
 
 ## Features
 
-- Multiple difficulty levels: Easy, Medium, Hard, Insane
+- Multiple difficulty levels: Easy, Medium, Hard, and Custom
 - Real-time hints (higher/lower)
 - High score tracking with persistent storage
 - Replay system for multiple rounds
+- Modular code structure with functions grouped into regions for better readability
 - Input validation for robust user experience
-- Modular code structure using functions
+- Interactive menu system for easy navigation
 
 ## How to Run
 
