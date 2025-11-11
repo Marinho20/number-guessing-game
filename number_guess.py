@@ -2,12 +2,17 @@
 import random
 
 
+dificuldades = ["easy", "medium", "hard", "insane", "custom"]
+tries = 1
+
+
 # função numero aleatorio
 def newnumber(b):
     cnumber = random.randint(1, b)
     return cnumber
 
 
+# region SCORES
 # função ler scores
 def readscores():
     lscores = []
@@ -24,7 +29,6 @@ def readscores():
     return lscores
 
 
-# função print scores
 def printscores(lscores):
     dificulties = ["easy", "medium", "hard", "insane"]
     print("scores:")
@@ -32,7 +36,6 @@ def printscores(lscores):
         print(f"{dificulties[i]}= {lscores[i]}")
 
 
-# função atualizar scores
 def newscores(dif, lscores):
     # defenição do current score
     if dif == "easy":
@@ -47,6 +50,9 @@ def newscores(dif, lscores):
     if dif == "insane":
         a = 3
         cscore = lscores[a]
+    if dif == "custom":
+        a = 4
+        cscore = lscores[a]
 
     if cscore == None:
         lscores[a] = tries
@@ -58,26 +64,23 @@ def newscores(dif, lscores):
     return lscores
 
 
-# função escrever novos scores
 def writescores(lscores):
-    dificulties = ["easy", "medium", "hard", "insane"]
+    dificulties = ["easy", "medium", "hard", "insane","Custom"]
     with open("scores.txt", "w") as f:
-        for i in range(4):
+        for i in range(5):
             f.write(f"{dificulties[i]} = {lscores[i]}\n")
 
 
-## print dificuldades e scores
-print(
-    "dificulties: \n easy mode -> numbers betwen 1 and 50 \n medium mode-> numbers betwen 1 and 100 \n hard mode-> numbers betwen 1 and 500 \n insane mode-> numbers betwen 1 and 1000 "
-)
-
-# defenição no numero de tentativas e possibilidades de dificuldades
-
-dificuldades = ["easy", "medium", "hard", "insane"]
-tries = 1
+# endregion
 
 
-# escolha das dificuldades
+# region DIFICULTIES
+def printdif():
+    print(
+        "dificulties: \n easy mode -> numbers betwen 1 and 50 \n medium mode-> numbers betwen 1 and 100 \n hard mode-> numbers betwen 1 and 500 \n insane mode-> numbers betwen 1 and 1000 \n custom mode -> you chose"
+    )
+
+
 def chosedif():
 
     dif = input("choose game dificulty:")
@@ -105,10 +108,19 @@ def chosedif():
         limite = 1000
         print("you chose insane dificulty")
 
+    if dif == "custom":
+        a = int(input("chose the max number:"))
+        ncorreto = newnumber(a)
+        limite = a
+        print("you chose custom dificulty")
+
     return ncorreto, limite, dif
 
 
-# resto das jogadas
+# endregion
+
+
+# region PLAYFUNCITON
 def play(ncorreto, limite):
     global tries
     tries = 0
@@ -141,23 +153,45 @@ def play(ncorreto, limite):
     return tries
 
 
-# Loop principal
-# region loop
-yn = "Y"
-while yn == "Y":
-    scores = readscores()
-    printscores(scores)
-    ncorreto, limite, dif = chosedif()
-    play(ncorreto, limite)
-    newscores(dif, scores)
-    writescores(scores)
-
-    tries = 1
-
-    yn = input("wanna play again(Y/N):")
-    if yn != "Y" and yn != "N":
-        yn = input("Invalid choice. Choose Y or N: ")
+# endregion
 
 
-print("It was nice playing with you!")
+# region MENU
+def pmenu():
+    choice = int(
+        input("\nMENU:\n 1-> Play Game\n 2-> View Leader Board\n 3-> Exit\n choice:")
+    )
+    return choice
+
+
+# endregion
+
+a = pmenu()
+
+
+# region principal while
+while a != 3:
+    if a == 1:
+        yn = "Y"
+        while yn == "Y":
+            printdif()
+            scores = readscores()
+            ncorreto, limite, dif = chosedif()
+            play(ncorreto, limite)
+            newscores(dif, scores)
+            writescores(scores)
+            tries = 1
+            yn = input("wanna play again(Y/N):")
+            while yn not in ("Y", "N"):
+                yn = input("Invalid choice. Choose Y or N: ")
+
+    elif a == 2:
+        scores = readscores()
+        printscores(scores)
+
+    else:
+        print("invalid option try again:")
+
+    a = pmenu()
+
 # endregion
